@@ -9,7 +9,7 @@ const OtpForm = () => {
     const [otpForm,showForm] = useState(true);
   const sendOtp = async () => {
     try {
-      let url = "http://localhost:8080/email-send";
+      let url = "http://localhost:8080/forgot";
       let options = {
         method: "POST",
         url: url,

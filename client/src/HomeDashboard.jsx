@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import FeaturedInfo from './FeaturedInfo';
 import WidgetLarge from './WidgetLarge';
 import WidgetSmall from './WidgetSmall';
@@ -7,6 +7,9 @@ import TopBar from './TopBar';
 import './app1.css';
 import SideBar from './SideBar';
 export default function HomeDashboard() {
+
+  
+  
   return (
     <>
 <TopBar/>

@@ -55,3 +55,18 @@
     cursor: pointer;
     margin-top: 30px;
 }
+.photoUpload{
+    color: white;
+    height: 60px;
+    width: 250px;
+    background-color: #f5af09;
+    margin: auto;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  input[type="file"]{
+    display: none;
+  }

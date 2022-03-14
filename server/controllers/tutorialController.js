@@ -78,7 +78,7 @@ exports.addVideoToTraining = async (req, res, next) => {
 exports.getallTrainings = async (req, res, next) => {
   try {
     const files = await Training.find();
-    res.status(201).send(files);
+    res.status(201).send(files);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
   } catch (error) {
     res.status(400).send(error.message);
   }

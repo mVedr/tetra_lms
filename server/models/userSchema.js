@@ -22,6 +22,18 @@ const userSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
+    location:{
+      type:String,
+      required:true,
+    },
+    gender:{
+      type: String,
+      enum: ["M", "F"],
+    },
+    department:{
+      type: String,
+      required: true,
+    },
     phone: {
       type: Number,
       required: true,

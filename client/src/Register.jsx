@@ -5,7 +5,7 @@ const Register = () => {
 
     const navigate = useNavigate();
     const [user,setUser] = useState({
-        name:"",email:"",phone:"",password:"",cpassword:""
+        name:"",email:"",phone:"",password:""
     });
 
 
@@ -21,7 +21,7 @@ const Register = () => {
     const PostData = async (e) =>{
         e.preventDefault();
 
-        const {name,email,phone,password,cpassword} = user;
+        const {name,email,phone,password} = user;
 
        const res = await fetch('/register',{
          method:"POST",
@@ -38,7 +38,6 @@ const Register = () => {
         email,
         phone,
         password,
-        cpassword
        }) 
     });
 
@@ -78,10 +77,6 @@ const Register = () => {
         <div className="mb-3">
           <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
           <input type="password" className="form-control" name="password" value={user.password} onChange={handleInputs} id="exampleInputPassword1" />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label" >Confirm Password</label>
-          <input type="password" className="form-control" name="cpassword" value={user.cpassword} onChange={handleInputs} id="exampleInputPassword1" />
         </div>
         <div className="mb-3 form-check">
           <input type="checkbox" className="form-check-input"   id="exampleCheck1" />

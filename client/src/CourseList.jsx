@@ -175,7 +175,7 @@ export default function CourseList() {
       <Card style={{ width: "18rem" }} key={index} className="box mx-2 my-3">
         <Card.Img variant="top" class="card-img-top" src={card.secure_url} />
         <Card.Body>
-          <Card.Title>{card.coursename}</Card.Title>
+          <Card.Title><strong>{card.coursename}</strong></Card.Title>
           <Card.Text>{card.description}</Card.Text>
         <Link to={`/course1/${card._id}`}>  <Button variant="primary">Go somewhere</Button></Link>
         </Card.Body>
@@ -194,7 +194,7 @@ export default function CourseList() {
               <button className="courseAddButton">Create</button>
             </Link>
           </div>
-          <div className="row p-2">{SingleFiles.map(renderCard)}</div>
+        <div className="row p-2">{SingleFiles.map(renderCard)}</div>
         </div>
       </div>
     </>

@@ -6,6 +6,7 @@ const {
   isRequestValidated,
   validateSigninRequest,
 } = require("../validator/auth");
+
 const { validationResult } = require("express-validator");
 
 exports.registerUser = async (req, res) => {
@@ -132,4 +133,24 @@ exports.logout = (req, res) => {
   console.log(`Hello my logout page`);
   res.clearCookie("jwtoken", { path: "/ " });
   res.status(200).send("User logout");
+};
+
+
+exports.getAllUser = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    res.status(201).send(users);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
+exports.getUserById = async (req, res, next) => {
+  try {
+    let id = req.params.id;
+    const user = await User.findById(id);
+    res.status(201).send(user);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 };

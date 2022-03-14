@@ -3,6 +3,7 @@ import { multipleFilesUpload, singleFileUpload } from "../data/api";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
+import "../NewCourse.css";
 import "react-circular-progressbar/dist/styles.css";
 const FileUploadscreen = (props) => {
   const [singleFile, setSingleFile] = useState("");
@@ -125,8 +126,8 @@ const FileUploadscreen = (props) => {
 
             <div className="newCourseItem">
               <label>Description</label>
-              <input
-                type="text"
+              <textarea
+                 rows="4" cols="50"
                 placeholder="Description..."
                 onChange={(e) => setDescription(e.target.value)}
               />
@@ -157,10 +158,14 @@ const FileUploadscreen = (props) => {
                   <div className="form-group">
                     <input
                       type="file"
+                      id="file"
                       onChange={(e) => SingleFileChange(e)}
                       className="form-control"
                       multiple
                     />
+                    <label for="file" className="photoUpload">
+                      <i className="fa-solid fa-video-plus"></i>Choose a Photo
+                    </label>
                   </div>
                 </div>
               </div>

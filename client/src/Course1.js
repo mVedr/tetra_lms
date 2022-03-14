@@ -5,18 +5,23 @@ import Modal from "./Modal";
 import Question from "./Question";
 import quizData from "./data/quiz.json";
 import ReactPlayer from "react-player";
+
+import "./CourseList.css";
 import { multipleFilesUpload, singleFileUpload } from "../src/data/api";
 import { getSingleFiles, getMultipleFiles, getFileById } from "./data/api";
+import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
+
+import "react-circular-progressbar/dist/styles.css";
 import { useParams } from "react-router-dom";
 let interval;
 const Course1 = (props) => {
   let { id } = useParams();
-
+  const [singleProgress, setSingleProgress] = useState(0);
   const [step, setStep] = useState(1);
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
-  const [multipleFiles, setMultipleFiles] = useState("");
-  const [multipleFile, setMultipleFile] = useState([]);
+  
+  const [multipleFiles, setMultipleFiles] = useState([]);
   const [showModel, setShowModel] = useState(false);
   const [time, setTime] = useState(0);
 
@@ -53,20 +58,21 @@ const Course1 = (props) => {
   };
   useEffect(() => {
     getSingleFilesList();
-    getMultipleFilesList();
+   
   }, []);
 
-  const getMultipleFilesList = async () => {
-    try {
-      const fileslist = await getMultipleFiles();
-      setMultipleFile(fileslist);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  
   const singleFileChange = (e) => {
     setMultipleFiles(e.target.files[0]);
-    // setMultipleProgress(0);
+     setSingleProgress(0);
+  };
+
+  const singleFileOptions = {
+    onUploadProgress: (ProgressEvent) => {
+      const { loaded, total } = ProgressEvent;
+      const percentage = Math.floor(((loaded / 1000) * 100) / (total / 1000));
+      setSingleProgress(percentage);
+    },
   };
 
   const UploadSingleFiles = async () => {
@@ -76,7 +82,7 @@ const Course1 = (props) => {
     // formData.append("description", description);
     // formData.append("rating", rating);
     formData.append("file", multipleFiles);
-    await multipleFilesUpload(formData);
+    await multipleFilesUpload(formData,id,singleFileOptions);
     props.getSingle();
   };
   const renderDetails = (card, index) => {
@@ -119,16 +125,20 @@ const Course1 = (props) => {
 
   const renderVideo = (video, index) => {
     return (
-      <div className="mx-2 my-3">
-        <div className="col">
+  
+        <div className="col mb-5">
+         <p>
+              <strong>Lesson {index+1}</strong>
+            </p>
+
           <ReactPlayer
             height="240px"
-            width="480px"
+            width="380px"
             controls 
             url={video.secure_url}
           />
         </div>
-      </div>
+    
     );
   };
   return (
@@ -176,31 +186,48 @@ const Course1 = (props) => {
           </div>
         </div>
       </div> */}
-
+      <div className="col-6">
+              <div className="row">
       <div className="col-9 mt-4">
         <div className="form-group">
           <input
-            type="file"
+            type="file" id="file"
             onChange={(e) => singleFileChange(e)}
             className="form-control"
             multiple
           />
+          <label for='file' className="videoUpload"><i className="fa-solid fa-video-plus"></i>Choose a Video</label>
         </div>
       </div>
-
+</div>
       <div className="row">
         <div className="col-10">
           <button
             type="button"
             onClick={() => UploadSingleFiles()}
-            className="newCourseButton"
-          >
-            Create
+            className="newCourseButton">
+            Upload
           </button>
         </div>
-      </div>
-
-      <div className="row p-2">{multipleFile.map(renderVideo)}</div>
+      <div className="col-2">
+                  <CircularProgressbar
+                    value={singleProgress}
+                    text={`${singleProgress}%`}
+                    styles={buildStyles({
+                      rotation: 0.25,
+                      strokeLinecap: "butt",
+                      textSize: "16px",
+                      pathTransitionDuration: 0.5,
+                      pathColor: `rgba(255,136,136,${singleProgress / 100})`,
+                      textColor: "#f88",
+                      trailColor: "#d6d6d6",
+                      backgroundColor: "#3e98c7",
+                    })}
+                  />
+                </div>
+              </div>
+</div>
+      <div className="container"><div className="row p-3">{singleFile?.videoId.map(renderVideo)}</div></div>
       {/* <div className="container ">
         <div className="row p-3">
           <div className="col  ">
