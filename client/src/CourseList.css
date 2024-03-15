@@ -8,7 +8,7 @@
   }
   
   .courseAddButton {
-    width: 80px;
+    width: 100px;
     border: none;
     padding: 5px;
     background-color: teal;
@@ -25,19 +25,42 @@ input[type="file"]{
 
 .videoUpload{
   color: white;
-  height: 60px;
-  width: 250px;
+  max-height:50px;
+  width: 150px;
   background-color: #f5af09;
-  position: absolute;
-  margin: auto;
-  top: 0;
-  bottom:0;
-  left: 20%;
-  right: 0;
+  border-radius: 5px;
   font-size: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin:24em 42em;
+
 }
 
-  
+.createtest{
+  position: absolute;
+  right: 10px;
+  top:10px;
+}
+
+html {
+  scroll-behavior: smooth;
+ }
+ 
+a .lnk {
+  text-decoration: none;
+  color: black;
+ } 
+/*  
+ #video {
+  margin-top: 10%;
+  padding-bottom: 25%;
+ } 
+
+ #pdf {
+  margin-top: 10%;
+  padding-bottom: 25%;
+ } 
+
+ #assign{
+  margin-top: 10%;
+  padding-bottom: 25%;
+ } 
+   */

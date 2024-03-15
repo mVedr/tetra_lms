@@ -9,7 +9,7 @@ const OtpForm = () => {
     const [otpForm,showForm] = useState(true);
   const sendOtp = async () => {
     try {
-      let url = "http://localhost:8080/forgot";
+      let url = "/forgot";
       let options = {
         method: "POST",
         url: url,
@@ -57,7 +57,7 @@ const OtpForm = () => {
               </button>
             </Link>
           </form>)
-          :<PasswordForm email={emailRef.current.value}/>
+          :<PasswordForm/>
        }
         </div>
       </div>

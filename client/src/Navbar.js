@@ -13,7 +13,7 @@ const Navbar = () => {
               />
 
               <a class="navbar-brand p-4" href="#">
-                TetraLMS
+                SkillTrek
               </a></a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon" />
@@ -31,8 +31,8 @@ const Navbar = () => {
                   Company
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><Link className="dropdown-item" to="/action">Contact Us</Link></li>
-                  <li><Link className="dropdown-item" to="/anotheraction">About Us</Link></li>
+                  <li><Link className="dropdown-item" to="/contact">Contact Us</Link></li>
+                  <li><Link className="dropdown-item" to="/about">About Us</Link></li>
                   <li><hr className="dropdown-divider" /></li>
                   <li><Link className="dropdown-item" to="/customer">Customers</Link></li>
                 </ul>

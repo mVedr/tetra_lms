@@ -1,3 +1,91 @@
 .dashboardContainer{
     display: flex;
 }
+
+.body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+ 
+    height: 100vh;
+    color: #fff;
+}
+
+.select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance:none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0!important;
+    background-color: #5c6664;
+    font-size: 1em;
+flex:1;
+padding: 0 .5em;
+color: #fff;
+cursor: pointer;
+
+}
+.select::-ms-expand{
+    display: none;
+}
+.select-container{
+position: relative;
+display: flex;
+width: 20em;
+height: 3em;
+line-height: 3;
+background-color: #5c6664;
+overflow: hidden;
+border-radius: .25em;
+}
+
+.select-container::after{
+    content: "\25BC";
+    position: absolute;
+    top:0;
+    right: 0;
+    padding: 0 1em;
+    background-color: #000;
+    cursor: pointer;
+    pointer-events: none;
+    transition: 0.25s all ease;
+}
+
+.select-container:hover::after{
+    color:dodgerblue ;
+}
+
+.subbutton{
+    width: 20em;
+    margin-top: 23px;
+    padding: 0.5em;
+color: #fff;
+font-size: 18px;
+border: 2px solid #fff;
+border-radius: .25em;
+background-color: dodgerblue;
+}
+
+.subbutton:hover{
+    background-color: white;
+    color: dodgerblue;
+}
+
+.assignId{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: dodgerblue;
+    height: 80vh;
+    width: 50vw;
+    color: #fff;
+    border-radius: 1em;
+}
+
+.assign{
+    margin-bottom: 1em;
+}

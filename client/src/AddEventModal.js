@@ -20,8 +20,10 @@ export default function({isOpen, onClose, onEventAdded}){
     }
 
     return(
+        <div>
         <Modal isOpen={isOpen} onRequestClose={onClose}>
-        <form onSubmit={onSubmit}>
+        <div style={{display:'flex',justifyContent:'center',alignItems:'center',margin:'20vh'}}>
+        <form onSubmit={onSubmit} style={{width:'50em'}} >
             <input placeholder="Title" value={title} onChange={e => setTitle(e.target.value)}/>
             <div>
             <label>Start Date </label>
@@ -33,9 +35,10 @@ export default function({isOpen, onClose, onEventAdded}){
             <Datetime value={end} onChange={date => setEnd(date)}/>
             </div>
 
-            <button>Add Event</button>
+            <button className="mt-2" style={{padding:'23px 12px', borderRadius:'10px', width:'100%'}}>Add Event</button>
         </form>
-
+</div>
         </Modal>
+        </div>
     )
 }

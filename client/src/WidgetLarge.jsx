@@ -1,31 +1,76 @@
 import "./WidgetLarge.css";
-import {Link} from 'react-router-dom';
+
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getSingleFiles, getMultipleFiles } from "./data/api";
 export default function WidgetLarge() {
+  const [SingleFiles, setSingleFiles] = useState([]);
+
+  const getSingleFilesList = async () => {
+    try {
+      const fileslist = await getSingleFiles();
+      setSingleFiles(fileslist);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getSingleFilesList();
+    //getMultipleFilesList();
+  }, []);
+
   const Button = ({ type }) => {
     return <button className={"widgetLgButton " + type}>{type}</button>;
+  };
+
+  const renderCard = (card, index) => {
+    return (
+      <tr className="widgetLgTr" key={index+1}>
+        <Link to={`/course1/${card._id}`}>
+          <td className="widgetLgTitleName">{card.coursename}</td>
+        </Link>
+
+        <td className="widgetLgTraining">{card.category} </td>
+        {/* <td className="widgetLgViews Completion">
+          <span class="badge bg-danger">Not Completed</span>
+        </td> */}
+        {/* <td className="widgetLgDuration">-</td> */}
+        <Link to={`/quiz/${card._id}`}>  
+          <td>
+          <button type="button" className="btn btn-outline-danger mt-2">
+              Appear for Test
+            </button>
+          </td>
+        </Link>
+      </tr>
+    );
   };
   return (
     <div className="widgetLg">
       <h3 className="widgetLgTitle">Course Content</h3>
       <table className="widgetLgTable">
-        <tr className="widgetLgTr">
-          <th className="widgetLgTh">Title</th>
-          <th className="widgetLgTh">Training</th>
-          <th className="widgetLgTh">Status</th>
-          <th className="widgetLgTh">Marks Scored</th>
-          <th className="widgetLgTh p-3">Options</th>
-          
-        </tr>
-
-        <tr className="widgtLgTr ">
+        <thead>
+          <tr className="widgetLgTr">
+            <th className="widgetLgTh">Title</th>
+            <th className="widgetLgTh">Training</th>
+            {/* <th className="widgetLgTh">Status</th> */}
+            {/* <th className="widgetLgTh">Marks Scored</th> */}
+            <th className="widgetLgTh p-3">Options</th>
+          </tr>
+        </thead>
+        <tbody>{SingleFiles.map(renderCard)}</tbody>
+        {/* <tr className="widgetLgTr ">
         <Link to="/course1" > <td className="widgetLgTitleName">
             
-            Advanced Product quality planning program-APQP
+            
             
           </td>
           </Link>
           <td className="widgetLgTraining">Technical TRAINING </td>
-          {/* <td className="widgetLgButton Completition mt-2">Completed</td> */}
+
+        
+          
+          
         <td className='widgetLgCompletion'><span class="badge bg-danger">Not Completed</span></td>
           
 
@@ -40,12 +85,11 @@ export default function WidgetLarge() {
             Environmental, social and governance (ESG) 
           </td>
           <td className="widgetLgTraining">Strategic TRAINING </td>
-          {/* <td className="widgetLgButton Completition mt-2">Completed</td> */}
+      
        <td className='widgetLgCompletion'><span class="badge bg-success">Completed</span></td>
 
           <td className="widgetLgDuration">11</td>
-          {/* <Link to="/course1"><td ><button type="button" className="btn btn-outline-danger mt-2">Appear for Test</button>
-   </td></Link>  */}
+        
         </tr>
 
         <tr className="widgtLgTr">
@@ -54,12 +98,11 @@ export default function WidgetLarge() {
             Presentation skills training courses
           </td>
           <td className="widgetLgTraining">Behavioural TRAINING </td>
-          {/* <td className="widgetLgButton NotComplete mt-2">Not Completed</td> */}
+      
        <td className='widgetLgCompletion'><span class="badge bg-success">Completed</span></td>
 
           <td className="widgetLgDuration">12</td>
-          {/* <Link to="/course1"><td ><button type="button" className="btn btn-outline-danger  mt-2">Appear for Test</button>
-   </td></Link>  */}
+        
         </tr>
 
         <tr className="widgtLgTr">
@@ -69,12 +112,11 @@ export default function WidgetLarge() {
           <td className="widgetLgTraining">
             Process Improvement TRAINING 
           </td>
-        {/* <td className="widgetLgButton NotComplete">Not Completed</td> */}
+     
        <td className='widgetLgCompletion'><span class="badge bg-success">Completed</span></td>
 
           <td className="widgetLgDuration">10</td>
-          {/* <Link to="/course1"><td ><button type="button" className="btn btn-outline-danger  mt-2">Appear for Test</button>
-   </td></Link> */}
+      
     </tr>
         
         <tr className="widgtLgTr">
@@ -84,12 +126,10 @@ export default function WidgetLarge() {
           <td className="widgetLgTraining">
             Process Improvement TRAINING 
           </td>
-        {/* <td className="widgetLgButton NotComplete">Not Completed</td> */}
        <td className='widgetLgCompletion'><span class="badge bg-success">Completed</span></td>
 
           <td className="widgetLgDuration">10</td>
-          {/* <Link to="/course1"><td ><button type="button" className="btn btn-outline-danger  mt-2">Appear for Test</button>
-   </td></Link>     */}
+        
    </tr>
         
         <tr className="widgtLgTr">
@@ -99,12 +139,11 @@ export default function WidgetLarge() {
           <td className="widgetLgTraining">
             Process Improvement TRAINING 
           </td>
-        {/* <td className="widgetLgButton NotComplete">Not Completed</td> */}
+      
        <td className='widgetLgCompletion'><span class="badge bg-success">Completed</span></td>
 
           <td className="widgetLgDuration">10</td>
-          {/* <Link to="/course1"><td ><button type="button" className="btn btn-outline-danger  mt-2">Appear for Test</button>
-   </td></Link> */}
+   
         </tr>
         
         <tr className="widgtLgTr">
@@ -114,12 +153,9 @@ export default function WidgetLarge() {
           <td className="widgetLgTraining">
             Process Improvement TRAINING 
           </td>
-        {/* <td className="widgetLgButton NotComplete">Not Completed</td> */}
        <td className='widgetLgCompletion'><span class="badge bg-success">Completed</span></td>
 
           <td className="widgetLgDuration">10</td>
-          {/* <Link to="/course1"><td ><button type="button" className="btn btn-outline-danger  mt-2">Appear for Test</button>
-   </td></Link> */}
         </tr>
         
         <tr className="widgtLgTr">
@@ -129,12 +165,10 @@ export default function WidgetLarge() {
           <td className="widgetLgTraining">
             Process Improvement TRAINING 
           </td>
-        {/* <td className="widgetLgButton NotComplete">Not Completed</td> */}
        <td className='widgetLgCompletion'><span class="badge bg-success">Completed</span></td>
 
           <td className="widgetLgDuration">10</td>
-          {/* <Link to="/course1"><td ><button type="button" className="btn btn-outline-danger  mt-2">Appear for Test</button>
-   </td></Link>      */}
+    
    </tr>
         
         <tr className="widgtLgTr">
@@ -145,14 +179,12 @@ export default function WidgetLarge() {
           <td className="widgetLgTraining">
             Process Improvement TRAINING 
           </td>
-        {/* <td className="widgetLgButton NotComplete">Not Completed</td> */}
+      
        <td className='widgetLgCompletion'><span class="badge bg-success">Completed</span></td>
 
           <td className="widgetLgDuration">10</td>
-          {/* <Link to="/course1"><td ><button type="button" className="btn btn-outline-danger  mt-2">Appear for Test</button>
-   </td></Link>      */}
-    </tr>
-
+          
+    </tr> */}
       </table>
     </div>
   );

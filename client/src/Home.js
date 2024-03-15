@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Layout from './Layout'
  import './style.css'
 
@@ -184,7 +185,7 @@ const Home = () => {
           </div>
         </div>
         
-        <p className="p5">Start fast with TMS Learn</p>
+        <p className="p5">Start fast with SkillTrek</p>
         
 
         
@@ -197,14 +198,14 @@ const Home = () => {
               <li  className="mb-2"><u><strong>Quick Links</strong></u></li>
                
               
-              <li>Home</li>
-              <li>About Us</li>
-              <li>Contact Us</li>
-              <li>Gallery</li>
-              <li>Resources</li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/about">About Us</Link></li>
+              <li><Link to="/contact">Contact Us</Link></li>
+              <li><Link to="/customer">Customers</Link></li>
+              <li><Link to="/pricing">Pricing</Link></li>
             </ul>
           </div>
-          <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-white">
+          {/* <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-white">
             <ul className="list2">
               <li className="mb-2"><u><strong>Expertise</strong></u></li>
               <li>Manufacturing Management Consulting</li>
@@ -212,17 +213,16 @@ const Home = () => {
               <li>Campus to Corporate Accelerator</li>
               <li>Automation</li>
             </ul>
-          </div>
+          </div> */}
           <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-white">
             <ul className="list3" >
               
             <li className="mb-3"><u><strong>Social Network</strong></u></li>
             <li><div className="row">
-              <div className="col"><i className="fab fa-facebook fa-2x whiteincolor"></i>
+            <div className="col"><a href='https://www.facebook.com/TetrahedronManufacturingServices/'><i className="fab fa-facebook fa-2x whiteincolor"></i></a>
             </div>
-            <div className="col"><i className="fab fa-instagram fa-2x"></i></div>
-            <div className="col"><i className="fab fa-linkedin fa-2x"></i></div>
-            <div className="col"><i className="fab fa-twitter fa-2x"></i></div>
+            <div className="col"><a href='https://www.instagram.com/tetrahedron_tms/' style={{textDecoration:'none',color:'white'}}><i className="fab fa-instagram fa-2x"></i></a></div>
+            <div className="col"><a href='https://www.linkedin.com/company/tetrahedronmanufacturingservices/mycompany/' style={{textDecoration:'none',color:'white'}}><i className="fab fa-linkedin fa-2x"></i></a></div>
             </div>
            
             </li></ul>

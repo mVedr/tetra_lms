@@ -1,6 +1,7 @@
 import React from 'react';
 import './About.css';
 import Navbar from './Navbar';
+import { Link } from 'react-router-dom';
 const AnotherAction = () => {
   return <div>
    <Navbar/>
@@ -11,7 +12,7 @@ const AnotherAction = () => {
                          <div className="Aboutcol-item-left">
                              <div className="Aboutrow">
                                  <p>Hi, we're</p>
-                                 <h1>TetraLMS</h1>
+                                 <h1>SkillTrek</h1>
                                  <p>And we're changing the way people think and feel about training.</p>
                              </div>
                          </div>
@@ -33,7 +34,7 @@ const AnotherAction = () => {
                          </div>
                          <div className="Aboutcol-items-right">
                              <p>When people grow, companies do too. And yet, so often the training we carefully create for our teams, is delivered on platforms not built for us. They’re confusing to use, stressful to manage, and just feel…off. To add insult to injury, they often come at a price we can’t afford.</p>
-                             <p>TalentLMS was build to change that. We’re on a mission to democratize training. To deliver a premium learning experience that’s accessible, affordable, and actually enjoyable.</p>
+                             <p>SkillTrek was build to change that. We’re on a mission to democratize training. To deliver a premium learning experience that’s accessible, affordable, and actually enjoyable.</p>
                              <p>We thought of all the things organizations and their teams want out of a training platform, and we built it. So training is no longer a chore, but an opportunity for people, and companies, to grow.</p>
                          </div>
                      </div>
@@ -104,8 +105,8 @@ const AnotherAction = () => {
                              <div className="Aboutslider-dot"></div>
                          </div>
                          <div className="Aboutdesc">
-                             <h1>Life at TetraLMS</h1>
-                             <p>Everything about being here just feels right. It’s not only Bob the pet plant who lives with Marketing, the intense ping-pong tournaments, or the cool office vibes. It’s the people. We simply enjoy each other’s company – which makes our jobs feel a lot less… job-y. We’re not into hierarchies but we’re big on respect, which makes life at TalentLMS really easy to love.</p>
+                             <h1>Life at SkillTrek</h1>
+                             <p>Everything about being here just feels right. It’s not only Bob the pet plant who lives with Marketing, the intense ping-pong tournaments, or the cool office vibes. It’s the people. We simply enjoy each other’s company – which makes our jobs feel a lot less… job-y. We’re not into hierarchies but we’re big on respect, which makes life at SkillTrek really easy to love.</p>
                          </div>
                      </div>
                  </section>
@@ -117,14 +118,14 @@ const AnotherAction = () => {
               <li  className="mb-2"><u><strong>Quick Links</strong></u></li>
                
               
-              <li>Home</li>
-              <li>About Us</li>
-              <li>Contact Us</li>
-              <li>Gallery</li>
-              <li>Resources</li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/about">About Us</Link></li>
+              <li><Link to="/contact">Contact Us</Link></li>
+              <li><Link to="/customer">Customers</Link></li>
+              <li><Link to="/pricing">Pricing</Link></li>
             </ul>
           </div>
-          <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-white">
+          {/* <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-white">
             <ul className="list2">
               <li className="mb-2"><u><strong>Expertise</strong></u></li>
               <li>Manufacturing Management Consulting</li>
@@ -132,17 +133,16 @@ const AnotherAction = () => {
               <li>Campus to Corporate Accelerator</li>
               <li>Automation</li>
             </ul>
-          </div>
+          </div> */}
           <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-white">
             <ul className="list3" >
               
             <li className="mb-3"><u><strong>Social Network</strong></u></li>
             <li><div className="row">
-              <div className="col"><i className="fab fa-facebook fa-2x whiteincolor"></i>
+            <div className="col"><a href='https://www.facebook.com/TetrahedronManufacturingServices/'><i className="fab fa-facebook fa-2x whiteincolor"></i></a>
             </div>
-            <div className="col"><i className="fab fa-instagram fa-2x"></i></div>
-            <div className="col"><i className="fab fa-linkedin fa-2x"></i></div>
-            <div className="col"><i className="fab fa-twitter fa-2x"></i></div>
+            <div className="col"><a href='https://www.instagram.com/tetrahedron_tms/' style={{textDecoration:'none',color:'white'}}><i className="fab fa-instagram fa-2x"></i></a></div>
+            <div className="col"><a href='https://www.linkedin.com/company/tetrahedronmanufacturingservices/mycompany/' style={{textDecoration:'none',color:'white'}}><i className="fab fa-linkedin fa-2x"></i></a></div>
             </div>
            
             </li></ul>

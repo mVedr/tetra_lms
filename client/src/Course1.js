@@ -1,30 +1,38 @@
 import React, { useState, useEffect } from "react";
-import Start from "./Start";
-import End from "./End";
-import Modal from "./Modal";
-import Question from "./Question";
-import quizData from "./data/quiz.json";
+import {saveAs} from 'file-saver'; 
 import ReactPlayer from "react-player";
-
+import "./Pdf.css";
+import { Viewer } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import { Worker } from "@react-pdf-viewer/core";
 import "./CourseList.css";
-import { multipleFilesUpload, singleFileUpload } from "../src/data/api";
-import { getSingleFiles, getMultipleFiles, getFileById } from "./data/api";
+import {
+  getSingleFiles,
+  multipleFilesUpload,
+  filedeleteById,
+  singleFileUpload,
+  getMultipleFiles,
+  getFileById,
+} from "./data/api";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
-
+import { Card, Button,ProgressBar} from "react-bootstrap";
 import "react-circular-progressbar/dist/styles.css";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+
 let interval;
 const Course1 = (props) => {
   let { id } = useParams();
-  const [singleProgress, setSingleProgress] = useState(0);
+  const [singleProgress, setSingleProgress] = useState();
   const [step, setStep] = useState(1);
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
-  
+
   const [multipleFiles, setMultipleFiles] = useState([]);
   const [showModel, setShowModel] = useState(false);
   const [time, setTime] = useState(0);
-
+  const [pdf, setPdf] = useState(false);
+  const [vid, setVid] = useState(false);
+  const [assign, setAssign] = useState(false);
   useEffect(() => {
     if (step === 3) {
       clearInterval(interval);
@@ -46,7 +54,7 @@ const Course1 = (props) => {
     }, 1000);
   };
   const [singleFile, setSingleFile] = useState();
-
+  const [fileType, setFileType] = useState("");
   const getSingleFilesList = async () => {
     // usepara
     try {
@@ -58,31 +66,26 @@ const Course1 = (props) => {
   };
   useEffect(() => {
     getSingleFilesList();
-   
   }, []);
 
-  
   const singleFileChange = (e) => {
     setMultipleFiles(e.target.files[0]);
-     setSingleProgress(0);
+    setSingleProgress(0);
   };
 
   const singleFileOptions = {
     onUploadProgress: (ProgressEvent) => {
-      const { loaded, total } = ProgressEvent;
-      const percentage = Math.floor(((loaded / 1000) * 100) / (total / 1000));
+      // const { loaded, total } = ProgressEvent;
+      const percentage = Math.round((ProgressEvent.loaded* 100) / (ProgressEvent.total));
       setSingleProgress(percentage);
     },
   };
 
   const UploadSingleFiles = async () => {
     const formData = new FormData();
-    // formData.append("coursename", coursename);
-    // formData.append("category", category);
-    // formData.append("description", description);
-    // formData.append("rating", rating);
+    formData.append("fileType", fileType);
     formData.append("file", multipleFiles);
-    await multipleFilesUpload(formData,id,singleFileOptions);
+    await multipleFilesUpload(formData, id, singleFileOptions);
     props.getSingle();
   };
   const renderDetails = (card, index) => {
@@ -101,7 +104,7 @@ const Course1 = (props) => {
             <h5 className="card-title">
               <strong>{card.coursename}</strong>
             </h5>
-            <p className="card-text ">
+            <p className="card-text p-2">
               {card.description}
               <br />
               <br />
@@ -109,261 +112,256 @@ const Course1 = (props) => {
               {card.category}
               <br />
               <br />
-              <strong> Duration :</strong> 3 Hours 30 minutes
+              <strong> Duration :</strong> {Math.floor(card.duration / 60)}{" "}
+              Hours {card.duration % 60} minutes
               <br />
               <br />
               {/* <strong> Total Enrolled : </strong>456 students */}
+              <Link to={`/quiz/${card._id}`}>
+                {" "}
+                <Button variant="primary" className="mx-2 my-4">Go for Test</Button>
+              </Link>
               <br />
               <br />
-              {/* <strong> Rating: </strong>{card.rating} */}
             </p>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderVideo = (video, index) => {
-    return (
-  
-        <div className="col mb-5">
-         <p>
-              <strong>Lesson {index+1}</strong>
-            </p>
-
-          <ReactPlayer
-            height="240px"
-            width="380px"
-            controls 
-            url={video.secure_url}
-          />
-        </div>
-    
-    );
-  };
-  return (
-    <>
-      <div className="container p-5">
-        {singleFile && renderDetails(singleFile, singleFile._id)}
-      </div>
-      {/* <div className="container p-5 ">
-        <div className="row">
-          <div className="col">
-            <img
-              src="/Images/apqp.jfif" style={{width:"600px"},{height:"400px"}}
-              className="img-fluid rounded-start"
-              alt="..."
-            />
-          </div>
-          <div className="col">
-            <div className="card-body">
-              <h5 className="card-title">
-                <strong>
-                  ADVANCED PRODUCT QUALITY PLANNING PROGRAM (APQP)
-                </strong>
-              </h5>
-              <p className="card-text ">
-                Advanced Product Quality Planning or APQP is a quality framework
-                used for developing new products in the automotive industry.
-                Advanced Product Quality Planning can be applied to any
-                industry. and its purpose is “To produce a product advanced
-                quality planning which will support the development of a product
-                or service that will satisfy to the customer.”
-                <br />
-                <br />
-                <strong> Course By:</strong>
-                <br />
-                <br />
-                <strong> Duration :</strong> 3 Hours 30 minutes
-                <br />
-                <br />
-                <strong> Total Enrolled : </strong>456 students
-                <br />
-                <br />
-                <strong> Rating: </strong>4.5/5
-              </p>
-            </div>
-          </div>
-        </div>
-      </div> */}
-      <div className="col-6">
-              <div className="row">
-      <div className="col-9 mt-4">
+            <div className="row">
         <div className="form-group">
+        <div className="select-container">
+          <select value={fileType} className="select" onChange={handleChange}>
+            <option value="DEFAULT">Choose a File Type</option>
+
+            <option key="Pdf" value="Pdf">Pdf</option>
+            <option key="Video" value="Video">Video</option>
+            <option key="Assignment" value="Assignment">Assignment</option>
+          </select>
+          </div>
           <input
-            type="file" id="file"
+            type="file"
+            id="file"
             onChange={(e) => singleFileChange(e)}
             className="form-control"
             multiple
           />
-          <label for='file' className="videoUpload"><i className="fa-solid fa-video-plus"></i>Choose a Video</label>
-        </div>
-      </div>
-</div>
-      <div className="row">
-        <div className="col-10">
+          <label for="file" className="videoUpload">
+            <i className="fa-solid fa-video-plus"></i>Choose a File
+          </label>
+          </div>
           <button
             type="button"
             onClick={() => UploadSingleFiles()}
-            className="newCourseButton">
+            className="newCourseButton"
+          >
             Upload
           </button>
-        </div>
-      <div className="col-2">
-                  <CircularProgressbar
-                    value={singleProgress}
-                    text={`${singleProgress}%`}
-                    styles={buildStyles({
-                      rotation: 0.25,
-                      strokeLinecap: "butt",
-                      textSize: "16px",
-                      pathTransitionDuration: 0.5,
-                      pathColor: `rgba(255,136,136,${singleProgress / 100})`,
-                      textColor: "#f88",
-                      trailColor: "#d6d6d6",
-                      backgroundColor: "#3e98c7",
-                    })}
-                  />
-                </div>
-              </div>
-</div>
-      <div className="container"><div className="row p-3">{singleFile?.videoId.map(renderVideo)}</div></div>
-      {/* <div className="container ">
-        <div className="row p-3">
-          <div className="col  ">
-            <p>
-              <strong>Lesson 1</strong>
-            </p>
-
-            <div class="embed-responsive embed-responsive-16by9">
-              <iframe
-                class="embed-responsive-item"
-                src="https://www.youtube.com/embed/_PYr6r7B8R4 "
-                allowfullscreen
-              ></iframe>
-            </div>
+         
           </div>
-          <div className="col">
-            <p>
-              <strong>Lesson 2</strong>
-            </p>
-            <div class="embed-responsive embed-responsive-16by9">
-              <iframe
-                class="embed-responsive-item"
-                src="https://www.youtube.com/embed/_PYr6r7B8R4"
-                allowfullscreen
-              ></iframe>
-            </div>
-          </div>
-          <div className="col">
-            <p>
-              <strong>Lesson 3</strong>
-            </p>
-            <div class="embed-responsive embed-responsive-16by9">
-              <iframe
-                class="embed-responsive-item"
-                src="https://www.youtube.com/embed/_PYr6r7B8R4"
-                allowfullscreen
-              ></iframe>
-            </div>
+          {singleProgress && <ProgressBar now={singleProgress} label={`${singleProgress}%`} />}
           </div>
         </div>
-        <div className="row p-3">
-          <div className="col  ">
-            <p>
-              <strong>Lesson 4</strong>
-            </p>
-
-            <div class="embed-responsive embed-responsive-16by9">
-              <iframe
-                class="embed-responsive-item"
-                src="https://www.youtube.com/embed/_PYr6r7B8R4"
-                allowfullscreen
-              ></iframe>
-            </div>
-          </div>
-          <div className="col">
-            <p>
-              <strong>Lesson 5</strong>
-            </p>
-            <div class="embed-responsive embed-responsive-16by9">
-              <iframe
-                class="embed-responsive-item"
-                src="https://www.youtube.com/embed/_PYr6r7B8R4"
-                allowfullscreen
-              ></iframe>
-            </div>
-          </div>
-          <div className="col">
-            <p>
-              <strong>Lesson 6</strong>
-            </p>
-            <div class="embed-responsive embed-responsive-16by9">
-              <iframe
-                class="embed-responsive-item"
-                src="https://www.youtube.com/embed/_PYr6r7B8R4"
-                allowfullscreen
-              ></iframe>
-            </div>
-          </div>
-        </div>
-      </div> */}
-      {/* <div className="container">
-      <div className="list-group">
-      <button type="button" className="list-group-item list-group-item-action active">Course Content </button>
-
-        <button type="button" className="list-group-item list-group-item-action " aria-current="true">
-          Introduction  <p className="float-end  "> </p>
-        </button>
-        <button type="button" className="list-group-item list-group-item-action">Lesson-1 <p className="float-end  ">< i className="fa fa-video fa-2x" />1 hour 30 minutes </p></button>
-        <div class="embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
-</div>
-        <button type="button" className="list-group-item list-group-item-action">Lesson-2 <p className="float-end  ">< i className="fa fa-video fa-2x" />1 hour 30 minutes </p></button>
-        <div class="embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
-</div>
-        <button type="button" className="list-group-item list-group-item-action">Lesson-3<p className="float-end  ">< i className="fa fa-video fa-2x" />1 hour 30 minutes </p></button>
-        <div class="embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
-</div>
-        <button type="button" className="list-group-item list-group-item-action" >Lesson-4<p className="float-end  ">< i className="fa fa-video fa-2x" />1 hour 30 minutes </p></button>
-        <div class="embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
-</div>
       </div>
-      
-      </div> */}
-      {/* <div className="container mt-3 mb-3">
-        {step === 1 && <Start onQuizStart={quizStartHandler} />}
-        {step === 2 && (
-          <Question
-            data={quizData.data[activeQuestion]}
-            onAnswerUpdate={setAnswers}
-            numberofQuestions={quizData.data.length}
-            activeQuestion={activeQuestion}
-            onSetActiveQuestion={setActiveQuestion}
-            onSetStep={setStep}
-          />
-        )}
-        {step === 3 && (
-          <End
-            results={answers}
-            data={quizData.data}
-            onReset={resetClickHandler}
-            onAnswersCheck={() => setShowModel(true)}
-            time={time}
-          />
-        )}
+    );
+  };
 
-        {showModel && (
-          <Modal
-            onClose={() => setShowModel(false)}
-            results={answers}
-            data={quizData.data}
+  const onDelete = async (id) => {
+    console.log(id);
+    await filedeleteById(id);
+  };
+  const renderVideo = (video, index) => {
+    return (
+      <>
+        <div className="col mb-5" key={index+1}>
+          <p>
+            <strong>Lesson {index + 1}</strong>
+            
+          <button className="btn btn-danger mx-5" onClick={() => onDelete(video._id)}>Delete</button>
+          </p>
+
+
+          <ReactPlayer
+            height="240px"
+            width="380px"
+            controls
+            url={video.secure_url}
           />
-        )}
+        </div>
+      </>
+    );
+  };
+  const renderPdf = (file, index) => {
+    return (
+      <>
+      <div className="col-6" key={index+1}>
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.13.216/build/pdf.worker.min.js">
+        <p>
+            <strong>Lesson {index + 1}</strong>
+            <button className="btn btn-danger mx-5" onClick={() => onDelete(file._id)}>Delete</button>
+          </p>
+
+         
+          <div
+            style={{
+              border: "1px solid rgba(0, 0, 0, 0.3)",
+              height: "750px",
+              width: "100%"
+            }}
+          >
+            <Viewer fileUrl={file.secure_url} />
+          </div>
+        </Worker>
+        </div>
+      </>
+    );
+  };
+
+  const renderAssign = (file, index) => {
+    return (
+      <>
+        <div className="col-6" key={index+1}>
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.13.216/build/pdf.worker.min.js">
+        <p>
+            <strong>Assignment {index + 1}</strong>
+            <button className="btn btn-danger mx-5" onClick={() => onDelete(file._id)}>Delete</button>
+          </p>
+          <div
+            style={{
+              border: "1px solid rgba(0, 0, 0, 0.3)",
+              height: "750px",
+              width: "100%",
+            }}
+          >
+            <Viewer fileUrl={file.secure_url} />
+            
+          </div>
+          <button className="btn btn-primary mt-2  " onClick={()=>saveFile(file,index)}>Download Pdf</button>
+        </Worker>
+</div>
+      </>
+    );
+  };
+
+  const saveFile = (file,index) => {
+    saveAs(
+      file.secure_url,
+      `Assignment ${index+1}.pdf`
+    );
+  };
+  const render1 = () => {
+    if (pdf || assign) {
+      setPdf(false);
+      setAssign(false);
+    }
+    setVid(true);
+  };
+  const render2 = () => {
+    if (vid || assign) {
+      setVid(false);
+      setAssign(false);
+    }
+    setPdf(true);
+  };
+
+  const render3 = () => {
+    if (vid || pdf) {
+      setVid(false);
+      setPdf(false);
+    }
+    setAssign(true);
+  };
+ 
+  const handleChange = (e) => {
+    console.log("Fruit Selected!!");
+    setFileType(e.target.value);
+  };
+  return (
+    <>
+    
+      <div className="createtest">
+        <Link to={`/newtest/${id}`}>
+          <button className="btn btn-primary mx-2">Create Test</button>
+        </Link>
+      </div>
+      <div className="container p-5">
+        {singleFile && renderDetails(singleFile, singleFile._id)}
+      </div>
+     
+     
+          {/* <div className="progressbar col-1 my-5 mx-5">
+          <CircularProgressbar
+            value={singleProgress}
+            text={`${singleProgress}%`}
+            styles={buildStyles({
+              rotation: 0.25,
+              strokeLinecap: "butt",
+              textSize: "16px",
+              pathTransitionDuration: 0.5,
+              pathColor: `rgba(255,136,136,${singleProgress / 100})`,
+              textColor: "#f88",
+              trailColor: "#d6d6d6",
+              backgroundColor: "#3e98c7",
+            })}
+          />
       </div> */}
+
+        {/* <div className="progressbar col-2 my-5">
+          <CircularProgressbar
+            value={singleProgress}
+            text={`${singleProgress}%`}
+            styles={buildStyles({
+              rotation: 0.25,
+              strokeLinecap: "butt",
+              textSize: "16px",
+              pathTransitionDuration: 0.5,
+              pathColor: `rgba(255,136,136,${singleProgress / 100})`,
+              textColor: "#f88",
+              trailColor: "#d6d6d6",
+              backgroundColor: "#3e98c7",
+            })}
+          />
+        </div> */}
+  
+      <div className="container mt-5">
+        {/* <button className="btn btn-primary" onClick= {render} >Video </button>
+        <button className="btn btn-primary" onClick= {render} >Pdf</button> */}
+        {/* let array = [
+           {name:test},
+  {name:test2}
+]
+
+this.array.map((item,index) =>{
+
+   return(
+
+      <div>
+        {item.name}
+         <button onClick={()=>this.showContentFunction()} >show content</button>
+         {this.renderContent()}
+      </div>
+
+   )
+
+
+}) */}
+        <div className="container p-3">
+        <a href="#video" className="lnk"> <button className="btn btn-primary mx-2 mb-5" onClick={render1}>
+            Watch Videos
+          </button></a>
+          <a href="#pdf" className="lnk">   <button className="btn btn-primary mx-2 mb-5" onClick={render2}>
+            {" "}
+            Pdf
+          </button></a>
+          <a href="#assign" className="lnk">  <button className="btn btn-primary mx-2 mb-5" onClick={render3}>
+            {" "}
+            Assignments
+          </button></a>
+          <div className="row p-3" id="video">{vid && singleFile?.videoId.map(renderVideo)}</div>
+         <div className="row p-3" id="pdf"> {pdf && singleFile?.pdfId.map(renderPdf)}</div>
+         <div className="row p-3" id="assign">{assign && singleFile?.assignId.map(renderAssign)}</div>
+        </div>
+
+      
+      </div>
+     
+   
     </>
   );
 };

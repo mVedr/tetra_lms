@@ -31,38 +31,41 @@
 // };
 
 // export default Login;
-import React, { useState, useEffect } from "react";
+import React, { useState,useRef } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import Axios from "axios";
 import HomeDashboard from "./HomeDashboard";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./Home";
+import login from "./Login";
 import axios from "axios";
 // import Dashboard from './Dashboard';
 const PasswordForm = (props) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [inputField, setInputField] = useState({
-    otpCode: '',
+    email:'',
+    otp: '',
     password: '',
   })
   const [errField, setErrField] = useState({
-    otpCodeErr: '',
+    emailErr:'',
+    otpErr: '',
     passwordErr: '',
   })
 
   const validFrom = () => {
     let formIsValid = true;
     setErrField({
-      otpCodeErr: '',
+      emailErr:'',
+      otpErr: '',
       passwordErr: '',
     })
 
-    if (inputField.otpCode === '') {
+    if (inputField.otp === '') {
       formIsValid = false;
       setErrField((prevState) => ({
         ...prevState,
-        otpCodeErr: "Please Enter Email",
+        otpErr: "Please Enter Email",
       }));
     }
     if (inputField.password === '') {
@@ -92,24 +95,23 @@ const PasswordForm = (props) => {
   // },[]);
 
   const loginUser = async () => {
+   
     if (validFrom()) {
-      console.log(inputField,props);
-      let url = "http://localhost:8080/change-password"
-      let options = {
-        method: "POST",
-        url: url,
-        Headers: {},
-        data: inputField,
-      }
       try {
+    // Object.assign(inputField,props);
+      let url = "/change-password";
+      let options = {
+        method: "PUT",
+        url: url,
+        data: inputField,
+      };
+   
         let response = await axios(options);
         console.log(response);
         if (response.data.statusText === "Success") {
-          toast.success("Login Successfull");
-          localStorage.setItem("token", response.data.token);
-          setTimeout(() => {
-            navigate("/HomeDashboard");
-          }, 1500);
+          toast.success(response.data.message);
+        
+            navigate("/login");
         } else {
           toast.error(response.data.message);
         }
@@ -130,11 +132,28 @@ const PasswordForm = (props) => {
         className="container my-5 rounded p-3"
         style={{ width: "400px", backgroundColor: "grey" }}
       >
-        <form method="POST">
+        <form method="PUT">
           <ToastContainer />
           <div className="header ">
             {/* <Link  to='/HomeDashboard'>User</Link>
     <Link to='/course1'>admin</Link> */}
+          </div>
+          <div className="mb-3">
+            <label htmlFor="exampleInputEmail1" className="form-label">
+              Email
+            </label>
+            <input
+              type="email"
+              className="form-control"
+              id="exampleInputEmail1"
+              name="email"
+              value={inputField.email}
+              onChange={inputHandler}
+              aria-describedby="emailHelp"
+            />
+            {errField.emailErr.length > 0 && 
+              <span className="error">{errField.emailErr}</span>
+            }
           </div>
           <div className="mb-3">
             <label htmlFor="exampleInputEmail1" className="form-label">
@@ -144,14 +163,14 @@ const PasswordForm = (props) => {
               type="number"
               className="form-control"
               id="exampleInputEmail1"
-              name="otpCode"
+              name="otp"
               maxLength="4"
-              value={inputField.otpCode}
+              value={inputField.otp}
               onChange={inputHandler}
               aria-describedby="emailHelp"
             />
-            {errField.otpCodeErr.length > 0 && 
-              <span className="error">{errField.otpCodeErr}</span>
+            {errField.otpErr.length > 0 && 
+              <span className="error">{errField.otpErr}</span>
             }
           </div>
           <div className="mb-3">
@@ -174,12 +193,9 @@ const PasswordForm = (props) => {
             </span> */}
           </div>
 
-          <div className="my-2 text-secondary">
-            <Link to="/register">Sign Up</Link>
-          </div>
             <button
               className="btn btn-outline-primary ml-3"
-              type="submit"
+              type="button"
               onClick={loginUser}
             >
               Change Password
@@ -191,8 +207,6 @@ const PasswordForm = (props) => {
       >admin</button> */}
         </form>
       </div>
-      <div className="container">{/* {role==="admin" && <Home/>} */}</div>
-      <Outlet />
     </>
   );
 };

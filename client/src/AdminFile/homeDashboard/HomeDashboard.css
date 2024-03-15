@@ -1,0 +1,9 @@
+.dashboardHome{
+    flex: 4;
+    padding: 20px;
+}
+
+.dashboardWidgets{
+    display: flex;
+    margin: 20px;
+}

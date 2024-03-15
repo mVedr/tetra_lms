@@ -5,7 +5,7 @@ export default function SideBar() {
     <div className="sideBar">
       <div className="sideBarWrapper">
         <div className="sideBarMenu">
-          <h3 className="sideBarTitle">Dashboard</h3>
+          <h3 className="sideBarTitle"><strong>Dashboard</strong></h3>
           <ul className="sideBarList">
           <Link to='/homedashboard' style={{textDecoration:'none',color:'#606060'}}>   <li className="sideBarListItem active"><i className="fas fa-home sideBarIcon" />Home</li></Link>
           <Link to='/courselist' style={{textDecoration:'none',color:'#606060'}}>  <li className="sideBarListItem active"><i className="fas fa-book sideBarIcon"/>My Courses</li></Link>

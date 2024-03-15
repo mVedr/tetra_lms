@@ -13,7 +13,7 @@ const Logout = () => {
             },
             credentials: "include"
         }).then((res)=>{
-
+            localStorage.clear();
             navigate('/login', {replace: true});
             if(!res.status != 200){
                 const error = new Error(res.error);

@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema(
   {
+
+    employId:{
+      type: String,
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -24,15 +29,14 @@ const userSchema = new mongoose.Schema(
     },
     location:{
       type:String,
-      required:true,
     },
-    gender:{
-      type: String,
-      enum: ["M", "F"],
+    company:{
+      type:String,
+      required:true,
     },
     department:{
       type: String,
-      required: true,
+      required:true,
     },
     phone: {
       type: Number,
@@ -42,10 +46,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-   
+    timeSpent:{
+      type:Number,
+      default:0,
+    },
+    totalMarks:{
+      type: Number,
+      default:0,
+    },
     role: {
       type: String,
-      enum: ["user", "admin"],
+      enum: ["user", "admin","super-admin"],
       default: "user",
     },
     profilePicture: {
@@ -62,8 +73,8 @@ const userSchema = new mongoose.Schema(
     },
     otpExpiry :{
       type : Number
-    }
-    
+    },
+    courseId:[{ type: mongoose.Schema.Types.ObjectId, ref:'Training'}],
   },
   { timestamps: true }
 );

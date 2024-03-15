@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { multipleFilesUpload, singleFileUpload } from "../data/api";
+import { useNavigate } from "react-router-dom";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import TopBar from "../TopBar";
 import SideBar from "../SideBar";
 import "../NewCourse.css";
 import "react-circular-progressbar/dist/styles.css";
 const FileUploadscreen = (props) => {
+  const navigate = useNavigate();
   const [singleFile, setSingleFile] = useState("");
   const [multipleFiles, setMultipleFiles] = useState("");
   const [coursename, setCourseName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
-  const [rating, setRating] = useState("");
+  const [duration, setDuration] = useState("");
   const [singleProgress, setSingleProgress] = useState(0);
   // const [multipleProgress, setMultipleProgress] = useState(0);
   const SingleFileChange = (e) => {
@@ -33,13 +35,16 @@ const FileUploadscreen = (props) => {
   };
   const uploadSingleFile = async () => {
     const formData = new FormData();
+    
     formData.append("coursename", coursename);
     formData.append("category", category);
     formData.append("description", description);
-    formData.append("rating", rating);
+    formData.append("duration", duration);
     formData.append("file", singleFile);
     await singleFileUpload(formData, singleFileOptions);
     props.getSingle();
+
+    navigate("/courselist");
   };
 
   // const multipleFileOptions = {
@@ -133,16 +138,14 @@ const FileUploadscreen = (props) => {
               />
             </div>
 
-            {/* <div className="newCourseItem">
-              <label>Rating</label>
+            <div className="newCourseItem">
+              <label>Duration</label>
               <input
                 type="number"
-                min="0"
-                max="5"
-                placeholder="Rating..."
-                onChange={(e) => setRating(e.target.value)}
+                placeholder="Duration in minutes..."
+                onChange={(e) => setDuration(e.target.value)}
               />
-            </div> */}
+            </div>
             <div className="col-6">
               <div className="row">
                 {/* <div className="col-6">

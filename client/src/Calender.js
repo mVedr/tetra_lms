@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import AddEventModal from "./AddEventModal";
+import "react-datetime/css/react-datetime.css";
 import axios from "axios";
 import moment from "moment";
 export default function () {
@@ -33,7 +34,7 @@ export default function () {
   return (
     <>
       <section>
-        <button onClick={() => setModalOpen(true)}>Add Event</button>
+        <button onClick={() => setModalOpen(true)} style={{width:'15%',padding:'12px',marginLeft:'1rem',marginTop:'0.5rem'}}>Add Event</button>
         <div style={{ position: "relative", zIndex: 0 }}>
           <FullCalendar
             datesSet={(date) => handleDatesSet(date)}
@@ -49,6 +50,7 @@ export default function () {
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
           onEventAdded={(event) => onEventAdded(event)}
+          ariaHideApp={false}
         />
       </section>
     </>
